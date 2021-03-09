@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { provide } from 'vue';
 import useUser from './composables/useUser';
 import useMessages from './composables/useMessages';
 
