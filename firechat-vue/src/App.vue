@@ -1,73 +1,20 @@
 <template>
-  <div class="view login" v-if="username === '' || username === null">
-    <form class="login-form" @submit.prevent="Login">
-      <!-- @submit is the same as v-on:submit -->
-      <div class="form-inner">
-        <h1>Login to FireChat</h1>
-        <label for="username">Username</label>
-        <input
-          type="text"
-          v-model="inputUsername"
-          placeholder="Please enter your username..."
-        />
-        <input type="submit" value="Login" />
-      </div>
-    </form>
-  </div>
-
-  <div class="view chat" v-else>
-    <header>
-      <button class="logout" @click="Logout">Logout</button>
-      <h1>Welcome, {{ username }}!</h1>
-    </header>
-    <section class="chat-box">
-      <div
-        v-for="message in state.messages"
-        :key="message.key"
-        :class="
-          message.username == username ? 'message current-user' : 'message'
-        "
-      >
-        <!-- v-bind:key is the same as :key -->
-        <div class="message-inner">
-          <div class="username">{{ message.username }}</div>
-          <div class="content">{{ message.content }}</div>
-        </div>
-      </div>
-    </section>
-    <footer>
-      <form @submit.prevent="SendMessage">
-        <input
-          type="text"
-          v-model="inputMessage"
-          placeholder="Write a message..."
-        />
-        <input type="submit" value="Send" />
-      </form>
-    </footer>
-  </div>
+  <Login v-if='!username' @login="username = $event" />
+  <VueChat v-else :username='username' @logout="username = ''"/>
 </template>
 
 <script>
-import { provide } from 'vue';
-import useUser from './composables/useUser';
-import useMessages from './composables/useMessages';
+import { ref } from 'vue';
+import VueChat from './components/VueChat.vue'
+import Login from './components/Login.vue'
 
 export default {
+  components: { Login, VueChat },
   setup() {
-    const { inputUsername, username, Login, Logout } = useUser();
-    const { inputMessage, state, SendMessage, onMounted } = useMessages(
-      username
-    );
+    const username = ref('');
 
     return {
-      inputUsername,
       username,
-      Login,
-      state,
-      inputMessage,
-      SendMessage,
-      Logout,
     };
   },
 };
