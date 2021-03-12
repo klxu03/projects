@@ -2,7 +2,6 @@ import { ref, reactive, onMounted } from 'vue';
 import db from '../db';
 
 export default function useMessages(username) {
-
   const inputMessage = ref('');
   const state = reactive({
     messages: [],
