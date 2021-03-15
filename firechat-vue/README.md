@@ -1,4 +1,5 @@
 # firechat-vue
+Tutorial from: https://www.youtube.com/watch?v=72Fk9i9HcZM
 
 ## Project setup
 ```
