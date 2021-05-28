@@ -19,7 +19,7 @@ var minimaxRoot =function(depth, game, isMaximisingPlayer) {
     for(var i = 0; i < newGameMoves.length; i++) {
         var newGameMove = newGameMoves[i];
         game.ugly_move(newGameMove);
-        var value = minimax(depth - 1, game, !isMaximisingPlayer); // We are essentially doing the first depth already because we're doing every single move
+        var value = minimax(depth - 1, game, -10000, 10000, !isMaximisingPlayer); // We are essentially doing the first depth already because we're doing every single move
         // Also always !isMaximisingPlayer since this is the bot. Bot is black. Black wants negative score
         game.undo();
         if(value >= bestMove) { // Just get the one that yields the best results
@@ -30,7 +30,7 @@ var minimaxRoot =function(depth, game, isMaximisingPlayer) {
     return bestMoveFound;
 };
 
-var minimax = function (depth, game, isMaximisingPlayer) {
+var minimax = function (depth, game, alpha, beta, isMaximisingPlayer) {
     positionCount++; // Literally something just for the data at the bottom
     
     if (depth === 0) { // Base case of this recursion
@@ -43,16 +43,27 @@ var minimax = function (depth, game, isMaximisingPlayer) {
         var bestMove = -9999;
         for (var i = 0; i < newGameMoves.length; i++) {
             game.ugly_move(newGameMoves[i]);
-            bestMove = Math.max(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
+            bestMove = Math.max(bestMove, minimax(depth - 1, game, -10000, 10000, !isMaximisingPlayer));
             game.undo();
+            alpha = Math.max(alpha, bestMove);
+            
+            // The extra alpha-beta pruning magic
+            if (beta <= alpha) {
+                return bestMove;
+            }
         }
         return bestMove;
     } else { // Always on the else statement because bot is black
         var bestMove = 9999;
         for (var i = 0; i < newGameMoves.length; i++) {
             game.ugly_move(newGameMoves[i]);
-            bestMove = Math.min(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
+            bestMove = Math.min(bestMove, minimax(depth - 1, game, -10000, 10000, !isMaximisingPlayer));
             game.undo();
+
+            // The extra alpha-beta pruning magic
+            if (beta <= alpha) {
+                return bestMove;
+            }
         }
         return bestMove;
     }
