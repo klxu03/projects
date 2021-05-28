@@ -11,7 +11,7 @@
           v-model="inputUsername"
           placeholder="Please enter your username..."
         />
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login Here" />
       </div>
     </form>
   </div>

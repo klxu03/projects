@@ -1,6 +1,8 @@
 <template>
-  <Login v-if="!username" @login="username = $event" />
-  <VueChat v-else :username="username" @logout="username = ''" />
+  <!-- <Login v-if="!username" @login="username = $event" /> -->
+  <Login v-if="!username" @login="setUsername($event)" />
+  <!-- <VueChat v-else :username="username" @logout="username = ''" /> -->
+  <VueChat v-else :username="username" @logout="setUsername('')" />
 </template>
 
 <script>
@@ -13,8 +15,13 @@ export default {
   setup() {
     const username = ref('');
 
+    const setUsername = (val) => {
+      username.value = val;
+    };
+
     return {
       username,
+      setUsername,
     };
   },
 };
