@@ -1,32 +1,61 @@
 var board;
 const game = new Chess();
 
+/* New copy pasted stuff */
+
+
+/* end of copy pasted stuff */
+
+
 /*The "AI" part starts here */
 
-var calculateBestMove = function(game) {
+// The first, root case. Do the first depth right here
+var minimaxRoot =function(depth, game, isMaximisingPlayer) {
 
     var newGameMoves = game.ugly_moves();
-    // game.ugly_moves() generates a list of all the possible moves
+    var bestMove = -9999;
+    var bestMoveFound;
 
-    var bestMove = null;
-    var bestValue = -999999;
-
-    for(let i = 0; i < newGameMoves.length; i++) {
-        let newGameMove = newGameMoves[i];
-        
-        // Actually really quickly make the move on the board
+    for(var i = 0; i < newGameMoves.length; i++) {
+        var newGameMove = newGameMoves[i];
         game.ugly_move(newGameMove);
-
-        // Take the current board value. However, take the negative of it since the bot is making the move, which is black so negative (want more black pieces than white pieces. but since each black piece is a negative, negative negative is positive and you want to maximize that)
-        const boardValue = -evaluateBoard(game.board()); // game.board() gives the current state of the board?
-        game.undo(); // Undo doing that move since it might not actually be the move the bot does
-        if (boardValue > bestValue) {
-            bestValue = boardValue;
-            bestMove = newGameMove;
+        var value = minimax(depth - 1, game, !isMaximisingPlayer); // We are essentially doing the first depth already because we're doing every single move
+        // Also always !isMaximisingPlayer since this is the bot. Bot is black. Black wants negative score
+        game.undo();
+        if(value >= bestMove) { // Just get the one that yields the best results
+            bestMove = value;
+            bestMoveFound = newGameMove;
         }
     }
+    return bestMoveFound;
+};
 
-    return bestMove;
+var minimax = function (depth, game, isMaximisingPlayer) {
+    positionCount++; // Literally something just for the data at the bottom
+    
+    if (depth === 0) { // Base case of this recursion
+        return -evaluateBoard(game.board());
+    }
+
+    var newGameMoves = game.ugly_moves();
+
+    if (isMaximisingPlayer) {
+        var bestMove = -9999;
+        for (var i = 0; i < newGameMoves.length; i++) {
+            game.ugly_move(newGameMoves[i]);
+            bestMove = Math.max(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
+            game.undo();
+        }
+        return bestMove;
+    } else { // Always on the else statement because bot is black
+        var bestMove = 9999;
+        for (var i = 0; i < newGameMoves.length; i++) {
+            game.ugly_move(newGameMoves[i]);
+            bestMove = Math.min(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
+            game.undo();
+        }
+        return bestMove;
+    }
 };
 
 const evaluateBoard = (board) => {
@@ -76,11 +105,22 @@ var makeBestMove = function () {
     }
 };
 
+let positionCount;
 var getBestMove = function (game) {
     if (game.game_over()) {
         alert('Game over');
     }
-    var bestMove = calculateBestMove(game);
+
+    positionCount = 0;
+    const depth = parseInt($('#search-depth').find(':selected').text());
+
+    const d = new Date().getTime();
+    const bestMove = minimaxRoot(depth, game, true);
+    const d2 = new Date().getTime();
+    const moveTime = d2 - d;
+    $('#position-count').text(positionCount);
+    $('#time').text(moveTime/1000 + 's');
+
     return bestMove;
 };
 
