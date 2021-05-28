@@ -3,15 +3,60 @@ const game = new Chess();
 
 /*The "AI" part starts here */
 
-var calculateBestMove =function(game) {
+var calculateBestMove = function(game) {
 
     var newGameMoves = game.ugly_moves();
     // game.ugly_moves() generates a list of all the possible moves
 
-    var randomNumber = Math.floor(Math.random() * newGameMoves.length);
-    return newGameMoves[randomNumber];
+    var bestMove = null;
+    var bestValue = -999999;
 
+    for(let i = 0; i < newGameMoves.length; i++) {
+        let newGameMove = newGameMoves[i];
+        
+        // Actually really quickly make the move on the board
+        game.ugly_move(newGameMove);
+
+        // Take the current board value. However, take the negative of it since the bot is making the move, which is black so negative (want more black pieces than white pieces. but since each black piece is a negative, negative negative is positive and you want to maximize that)
+        const boardValue = -evaluateBoard(game.board()); // game.board() gives the current state of the board?
+        game.undo(); // Undo doing that move since it might not actually be the move the bot does
+        if (boardValue > bestValue) {
+            bestValue = boardValue;
+            bestMove = newGameMove;
+        }
+    }
+
+    return bestMove;
 };
+
+const evaluateBoard = (board) => {
+    let totalEvaluation = 0;
+    for (let i = 0; i < 8; i++) {
+        for (let i2 = 0; i2 < 8; i2++) {
+            totalEvaluation = totalEvaluation + getPieceValue(board[i][i2]);
+        }
+    }
+
+    return totalEvaluation;
+}
+
+const getPieceValue = ( piece ) => {
+    if (piece === null) {
+        return 0;
+    }
+
+    const pieceValues = {
+        p: 10,
+        r: 50,
+        n: 30,
+        b: 30,
+        q: 90,
+        k: 900
+    }
+    
+    const value = pieceValues[piece.type];
+    return piece.color === 'w' ? value : -value;
+}
 
 var makeBestMove = function () {
     var bestMove = getBestMove(game);
@@ -19,10 +64,10 @@ var makeBestMove = function () {
     
     // Should uncomment the line under me and comment 2 lines under
     // game.ugly_move(bestMove);
-    console.log('game.ugly_move(bestMove);', game.ugly_move(bestMove)); //Actually go ahead and make the move    
+    console.log('game.ugly_move(bestMove);', game.ugly_move(bestMove)); // Actually go ahead and make the move using the ugly_move(move) function    
 
     board.position(game.fen()); 
-    // Believe game.fen() goes ahead and generates the board configuration with Forsynth-Edwards Notation
+    // game.fen() goes ahead and generates the board configuration with Forsynth-Edwards Notation
     console.log(game.fen())
 
     renderMoveHistory(game.history()); // After the bot makes a move, render it into the move history and add it into the table
