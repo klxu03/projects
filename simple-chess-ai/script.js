@@ -18,7 +18,7 @@ var minimaxRoot =function(depth, game, isMaximisingPlayer) {
 
     for(var i = 0; i < newGameMoves.length; i++) {
         var newGameMove = newGameMoves[i];
-        game.ugly_move(newGameMove);
+        game.ugly_move(newGameMove); // Makes a move
         var value = minimax(depth - 1, game, -10000, 10000, !isMaximisingPlayer); // We are essentially doing the first depth already because we're doing every single move
         // Also always !isMaximisingPlayer since this is the bot. Bot is black. Black wants negative score
         game.undo();
