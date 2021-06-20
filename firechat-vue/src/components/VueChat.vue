@@ -8,9 +8,7 @@
       <div
         v-for="message in state.messages"
         :key="message.key"
-        :class="
-          message.username === username ? 'message current-user' : 'message'
-        "
+        :class="message.username === username ? 'message current-user' : 'message'"
       >
         <!-- v-bind:key is the same as :key -->
         <div class="message-inner">
@@ -21,11 +19,7 @@
     </section>
     <footer>
       <form @submit.prevent="SendMessage">
-        <input
-          type="text"
-          v-model="inputMessage"
-          placeholder="Write a message..."
-        />
+        <input type="text" v-model="inputMessage" placeholder="Write a message..." />
         <input type="submit" value="Send" />
       </form>
     </footer>
@@ -44,9 +38,8 @@ export default {
     },
   },
   setup(props, ctx) {
-    const { SendMessage, inputMessage, state } = useMessages(
-      toRefs(props).username
-    );
+    // const { SendMessage, inputMessage, state } = useMessages(toRefs(props).username);
+    const { SendMessage, inputMessage, state } = useMessages(props.username);
 
     function Logout() {
       ctx.emit('logout');
