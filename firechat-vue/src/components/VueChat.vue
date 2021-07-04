@@ -38,8 +38,8 @@ export default {
     },
   },
   setup(props, ctx) {
-    // const { SendMessage, inputMessage, state } = useMessages(toRefs(props).username);
-    const { SendMessage, inputMessage, state } = useMessages(props.username);
+    const { SendMessage, inputMessage, state } = useMessages(toRefs(props).username);
+    // const { SendMessage, inputMessage, state } = useMessages(props.username);
 
     function Logout() {
       ctx.emit('logout');
