@@ -1,3 +1,5 @@
+/* https://youtu.be/_8gHHBlbziw */
+
 // Sync
 const synch = () => {
 	const otherFunc = () => {
