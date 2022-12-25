@@ -1,3 +1,5 @@
+/* https://youtu.be/_8gHHBlbziw */
+
 // Sync
 const synch = () => {
 	const otherFunc = () => {
@@ -32,10 +34,10 @@ const asynch = () => {
 const asyncLogin = () => {
 	console.log("Start");
 
-	const loginUser = (email, password, callback) => {
+	const loginUser = (email, password, onSuccess, onFailure) => {
 		setTimeout(() => {
 			console.log("Now we have the data");
-			callback({ userEmail: email });
+			onSuccess({ userEmail: email });
 			return { userEmail: email };
 		}, 1.5 * 1000);
 	};
@@ -49,7 +51,7 @@ const asyncLogin = () => {
 
 	const videoDetails = (video, callback) => {
 		setTimeout(() => {
-			callback({ video });
+			console.log({ video });
 			callback("title of video");
 		}, 2 * 1000);
 	};
