@@ -54,17 +54,18 @@ const promiseLogin = () => {
 		});
 	};
 
-	loginUser("kevin@google.com", 1234).then((user) => {
-		console.log({ user });
-		getUserVideos(user.email);
-	});
-	// .then((videos) => {
-	// 	console.log({ videos });
-	// 	videoDetails(videos[0]);
-	// });
-	// .then((details) => {
-	// 	console.log({ details });
-	// });
+	loginUser("kevin@google.com", 1234)
+		.then((user) => {
+			console.log({ user });
+			return getUserVideos(user.email);
+		})
+		.then((videos) => {
+			console.log({ videos });
+			return videoDetails(videos[0]);
+		})
+		.then((details) => {
+			console.log({ details });
+		});
 };
 
 promiseLogin();
