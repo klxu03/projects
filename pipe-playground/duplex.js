@@ -10,7 +10,9 @@ const {
   EventEmitter,
 } = require('stream');
 const readable = fs.createReadStream('./my-file.txt', { highWaterMark: 20 });
-const writable = fs.createWriteStream('./capitalized-my-file.txt');
+const writable = fs.createWriteStream('./capitalized-my-file.txt', {
+  highWaterMark: 5,
+});
 
 const uppercase = new Transform({
   transform(chunk, encoding, callback) {
@@ -59,7 +61,11 @@ class ReplaceText extends Transform {
     super();
   }
 
-  _transform(chunk, encoding, callback) {}
+  _transform(chunk, encoding, callback) {
+    const transformedChunk = chunk.toString().toUpperCase();
+    this.push(transformedChunk);
+    callback();
+  }
 }
 
 const throttle1 = new Throttle(50);
@@ -67,11 +73,22 @@ const throttle2 = new Throttle(50);
 throttle1.setMaxListeners(15);
 
 console.time();
-pipeline(readable, throttle1, uppercase, throttle2, report, writable, (err) => {
-  if (err) {
-    console.error(err);
+
+const uppercaseClass = new ReplaceText();
+pipeline(
+  readable,
+  throttle1,
+  // uppercase,
+  uppercaseClass,
+  throttle2,
+  report,
+  writable,
+  (err) => {
+    if (err) {
+      console.error(err);
+    }
   }
-});
+);
 
 writable.on('close', () => {
   console.timeEnd();
