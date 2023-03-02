@@ -68,6 +68,25 @@ class ReplaceText extends Transform {
   }
 }
 
+class DoubleText extends Transform {
+  constructor() {
+    super();
+  }
+
+  _transform(chunk, encoding, callback) {
+    let transformedChunk = [];
+
+    const chunkString = chunk.toString();
+    for (let i = 0; i < chunkString.length; i++) {
+      transformedChunk.push(chunkString[i]);
+      transformedChunk.push(chunkString[i]);
+    }
+
+    this.push(transformedChunk.join(''));
+    callback();
+  }
+}
+
 const throttle1 = new Throttle(50);
 const throttle2 = new Throttle(50);
 throttle1.setMaxListeners(15);
@@ -75,11 +94,14 @@ throttle1.setMaxListeners(15);
 console.time();
 
 const uppercaseClass = new ReplaceText();
+const doubleClass = new DoubleText();
+
 pipeline(
   readable,
   throttle1,
   // uppercase,
   uppercaseClass,
+  doubleClass,
   throttle2,
   report,
   writable,
