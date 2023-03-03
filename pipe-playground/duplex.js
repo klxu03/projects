@@ -49,6 +49,7 @@ class Throttle extends Duplex {
   _write(chunk, encoding, callback) {
     this.push(chunk);
     setTimeout(callback, this.delay);
+    callback();
   }
 
   _final() {
