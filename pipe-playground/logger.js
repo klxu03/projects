@@ -26,6 +26,42 @@ class Logger extends PassThrough {
   }
 }
 
+/*
+class Logger extends PassThrough {
+	writeStream: WriteStream
+	// time stamp versions of files so can see before after like a button color changes
+
+	constructor() {
+		super()
+		// timestamp and send logs to different
+		this.writeStream = fs.createWriteStream(
+			path.join(packageDirs.cliCore, `./logs/${Date.now()}.txt`),
+			{
+				highWaterMark: 20
+			}
+		)
+	}
+
+	_read() {
+		// noop
+	}
+
+	_write(
+		chunk: any,
+		encoding: BufferEncoding,
+		callback: (error?: Error | null) => void
+	): void {
+		this.push(chunk)
+		this.writeStream.write(decompressResponse(chunk))
+		callback()
+	}
+
+	_final() {
+		this.push(null)
+	}
+}
+*/
+
 const log = new Logger();
 const writable = fs.createWriteStream('logger-my-file.txt');
 
