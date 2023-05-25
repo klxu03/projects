@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <meta charset="utf8">
+    <title>Fetch &amp; Streams API Progress Indicators</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/png" />
+
+    <meta name="description" content="Examples for showing progress indicators with Streams, Service Workers, and Fetch">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@AnthumChris" />
+    <meta name="og:title" content="Progress Indicators using Streams, Service Workers, and Fetch" />
+    <meta name="twitter:title" content="Progress Indicators using Streams, Service Workers, and Fetch" />
+    <meta name="og:description" content="Examples for showing progress indicators with Streams, Service Workers, and Fetch" />
+    <meta name="twitter:description" content="Examples for showing progress indicators with Streams, Service Workers, and Fetch" />
+    <meta name="og:image" content="https://fetch-progress.anthum.com/images/logo-streams-300.png" />
+    <meta name="twitter:image" content="https://fetch-progress.anthum.com/images/logo-streams-300.png" />
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      body {
+        padding: 0 1em;
+        text-align: left;
+        font-family:  sans-serif;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-between;  
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      a {
+        text-decoration: underline;
+      }
+      footer {
+        padding: 1rem 0;
+        text-align: center;
+      }
+      footer a {
+        padding: .5em 1em;
+        display: inline-block;
+      }
+      p {
+        text-align: left;
+        line-height: 1.5em;
+        margin: 0 auto 1.5em auto;
+      }
+
+      code {
+        line-height: 1em;
+      }
+      h1 {
+        margin-bottom: 3rem;
+        font-size: 130%
+      }
+      h2 {
+        font-size: 110%;
+        margin-bottom: .25em;
+      }
+    </style>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50610215-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-50610215-6');
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Fetch &amp; Streams API Progress Indicator Examples</h1>
+
+      <h2><a href="sw-basic/">Service Worker - Basic</a></h2>
+      <p>
+        An inline <code>&lt;img&gt;</code> tag renders on the page while a Service Worker and <code>ReadableStream</code> simultaneously provide download progress. Minimal code is used to exemplify the basic JavaScript requirements.
+      </p>
+      
+      <h2><a href="fetch-basic/">Fetch - Basic</a></h2>
+      <p>
+        A <code>ReadableStream</code> shows progress while a remote image is downloaded with <code>fetch()</code>. Minimal code is used to exemplify the basic JavaScript requirements.
+      </p>
+
+      <h2><a href="fetch-enhanced/">Fetch - Enhanced</a></h2>
+      <p>
+        Similar to above with progress bars and robust code to handle real-world UI interactions.  Downloads can be cancelled/restarted, multiple downloads are prevented, race conditions don't exist, errors edge cases are handled.
+      </p>
+
+      <h2>Service Worker - Enhanced UI</h2>
+      <p>[not yet started].  This will exemplify progress for multiple <code>&lt;img&gt;</code> tags, download cancellations, and other real-world UI interactions.</p>
+
+    </main>
+    <footer>
+      <a href="https://github.com/AnthumChris/fetch-progress-indicators">View on GitHub</a>
+    </footer>
+  </body>
+</html>
